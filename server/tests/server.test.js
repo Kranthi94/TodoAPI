@@ -6,9 +6,17 @@ var {app} = require('../server.js');
 
 var {TodoModel} = require('../models/todo.js');
 
+const todos = [{
+  text : 'First todo to insert'
+}, {
+  text : 'Second todo to insert'
+}];
+
 beforeEach((done) => {
     TodoModel.remove({}).then(() => {
-      done();
+      TodoModel.insertMany(todos).then(() => {
+        done();
+      })
     });
 });
 
@@ -37,7 +45,7 @@ describe('POST /todos', () => {
               return done(err);
             }
 
-            TodoModel.find().then((todos) => {
+            TodoModel.find({text}).then((todos) => {
               expect(todos.length).toBe(1);
               expect(todos[0].text).toBe(text);
               expect(todos[0].completed).toBe(completed);
