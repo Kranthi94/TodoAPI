@@ -28,6 +28,17 @@ app.post('/todos', (req, res) => {
   });
 });
 
+app.get('/todos', (req, res) => {
+
+    TodoModel.find().then((todos) => {
+      res.send({
+        todos
+      });
+    }, (err) => {
+      res.send(err);
+    });
+});
+
 app.listen(8000, () => {
   console.log('Started on port 8000');
 });
