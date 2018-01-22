@@ -32,6 +32,10 @@ app.listen(8000, () => {
   console.log('Started on port 8000');
 });
 
+module.exports = {
+  app
+};
+
 // var newTodo = new TodoModel({
 //   text : 'Have Dinner'
 // });
