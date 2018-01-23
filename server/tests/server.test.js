@@ -72,3 +72,17 @@ describe('POST /todos', () => {
           .end(done);
     })
 });
+
+describe('GET /todos', () => {
+
+    it('Should get all the todos from the database', (done) => {
+
+        supertest(app)
+          .get('/todos')
+          .expect(200)
+          .expect((res) => {
+              expect(res.body.todos.length).toBe(2);
+          })
+          .end(done);
+    });
+});
