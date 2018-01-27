@@ -35,13 +35,3 @@ TodoModel.findByIdAndRemove(_todoid).then((todos) => {
 }).catch((err) => {
   console.log(err);m
 });
-
-UserModel.findById(_userid).then((users) => {
-
-  if(!users){
-    return console.log('Unable to find the user');
-  }
-  console.log('Find by User : ', users);
-}).catch((err) => {
-  console.log(err);
-});

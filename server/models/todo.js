@@ -10,6 +10,10 @@ var TodoModel = mongoose.model('Todo', {
   completed : {
     type : Boolean,
     default : false
+  },
+  completedAt : {
+    type : String,
+    default : null
   }
 });
 
