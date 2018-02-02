@@ -115,7 +115,24 @@ app.patch('/todos/:id', (req, res) => {
     }).catch((err) => {
         res.status(400).send({});
     });
-})
+});
+
+// <--User API Calls-->
+
+app.post('/user', (req, res) => {
+
+    var body = _.pick(req.body, ['name', 'email', 'password']);
+
+    var user = new UserModel(body);
+
+    console.log(user);
+
+    user.save().then((user) => {
+      res.status(200).send({user});
+    }).catch((err) => {
+      res.status(404).send();
+    });
+});
 
 app.listen(port, () => {
   console.log(`Started on port ${port}`);
