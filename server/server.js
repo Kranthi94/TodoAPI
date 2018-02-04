@@ -12,6 +12,8 @@ var {TodoModel} = require('./models/todo.js');
 
 var {UserModel} = require('./models/user.js');
 
+var {authenticate} = require('./middleware/authenticate.js');
+
 var {ObjectID} = require('mongodb');
 
 var app = express();
@@ -132,6 +134,10 @@ app.post('/user', (req, res) => {
     }).catch((err) => {
       res.status(404).send();
     });
+});
+
+app.get('/user/me', authenticate, (req, res) => {
+  res.send(req.user);
 });
 
 app.listen(port, () => {
