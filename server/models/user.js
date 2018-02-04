@@ -6,6 +6,8 @@ var jwt = require('jsonwebtoken');
 
 var _ = require('lodash');
 
+var bcrypt = require('bcrypt');
+
 var UserSchema = new mongoose.Schema({
   name : {
     type : String,
@@ -87,7 +89,25 @@ UserSchema.statics.findByToken = function (token) {
     'tokens.access' : 'auth',
     'tokens.token' : token
   });
-}
+};
+
+UserSchema.pre('save', function (next) {
+
+  var user = this;
+
+  if (user.isModified('password')) {
+
+    bcrypt.genSalt(10, (err, salt) => {
+      
+      bcrypt.hash(user.password, salt, (err, hash) => {
+          user.password = hash;
+          next();
+      });
+    });
+  }else {
+    next();
+  }
+});
 
 var UserModel = mongoose.model('Users', UserSchema);
 
