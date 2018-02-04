@@ -117,7 +117,7 @@ app.patch('/todos/:id', (req, res) => {
     });
 });
 
-// <--User API Calls-->
+//------------------------------------User API Calls----------------------------------------------------//
 
 app.post('/user', (req, res) => {
 
@@ -125,10 +125,10 @@ app.post('/user', (req, res) => {
 
     var user = new UserModel(body);
 
-    console.log(user);
-
-    user.save().then((user) => {
-      res.status(200).send({user});
+    user.save().then(() => {
+      return user.generateAuthToken();
+    }).then((token) => {
+      res.header('x-auth', token).send(user);
     }).catch((err) => {
       res.status(404).send();
     });
@@ -141,26 +141,3 @@ app.listen(port, () => {
 module.exports = {
   app
 };
-
-// var newTodo = new TodoModel({
-//   text : 'Have Dinner'
-// });
-//
-// newTodo.save().then((docs) => {
-//   console.log(docs);
-// }, (err) => {
-//   console.log('Unable to insert todo');
-// });
-//
-// var newUser = new UserModel({
-//   name : 'Naveen',
-//   age : 27,
-//   location : 'Chennai',
-//   email : 'navvenkumar2@gmail.com'
-// });
-//
-// newUser.save().then((docs) => {
-//   console.log(docs);
-// }, (err) => {
-//   console.log(err);
-// });
