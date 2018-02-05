@@ -2,7 +2,7 @@ const MongoClient = require('mongodb').MongoClient;
 
 MongoClient.connect('mongodb://localhost:27017/TodoAPI', (err, db) => {
 
-  if(err){
+  if (err) {
     return console.log('Unable to connect to database');
   }
 
@@ -24,12 +24,12 @@ MongoClient.connect('mongodb://localhost:27017/TodoAPI', (err, db) => {
   // });
 
   myDB.collection('Users').insertOne({
-    name : 'Kranthi',
-    age : 24,
-    location : 'Hyderabad',
-    email : 'abc@gmail.com'
+    name: 'Kranthi',
+    age: 24,
+    location: 'Hyderabad',
+    email: 'abc@gmail.com'
   }, (err, res) => {
-    if(err){
+    if (err) {
       return console.log('Unable to insert the user', err);
     }
 

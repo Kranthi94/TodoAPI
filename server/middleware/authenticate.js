@@ -6,6 +6,8 @@ var authenticate = (req, res, next) => {
 
   UserModel.findByToken(token).then((user) => {
 
+    console.log(user);
+
     if(!user){
       return Promise.reject();
     }

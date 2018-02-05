@@ -1,24 +1,16 @@
-var expect = require('expect');
+const expect = require('expect');
 
-var supertest = require('supertest');
+const supertest = require('supertest');
 
-var {app} = require('../server.js');
+const {app} = require('../server.js');
 
-var {TodoModel} = require('../models/todo.js');
+const {TodoModel} = require('../models/todo.js');
 
-const todos = [{
-  text : 'First todo to insert'
-}, {
-  text : 'Second todo to insert'
-}];
+const {todos, populateTodos, users, populateUsers} = require('./seed/seed.js');
 
-beforeEach((done) => {
-    TodoModel.remove({}).then(() => {
-      TodoModel.insertMany(todos).then(() => {
-        done();
-      })
-    });
-});
+beforeEach(populateUsers);
+
+beforeEach(populateTodos);
 
 describe('POST /todos', () => {
 
@@ -30,6 +22,7 @@ describe('POST /todos', () => {
 
       supertest(app)
         .post('/todos')
+        .set('x-auth', users[0].token[0].token)
         .send({
           text,
           completed
@@ -60,6 +53,7 @@ describe('POST /todos', () => {
 
         supertest(app)
           .post('/todos')
+          .set('x-auth', users[0].token[0].token)
           .send({
             text : 'Inserting only text for the insertion to fail'
           })
@@ -79,9 +73,10 @@ describe('GET /todos', () => {
 
         supertest(app)
           .get('/todos')
+          .set('x-auth', users[0].token[0].token)
           .expect(200)
           .expect((res) => {
-              expect(res.body.todos.length).toBe(2);
+              expect(res.body.todos.length).toBe(1);
           })
           .end(done);
     });

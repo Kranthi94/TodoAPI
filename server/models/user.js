@@ -72,6 +72,49 @@ UserSchema.methods.generateAuthToken = function () {
   });
 };
 
+UserSchema.methods.removeToken = function(token) {
+
+  console.log(token);
+
+  var user = this;
+
+  return user.update({
+    $pull : {
+      tokens : {token}
+    }
+  });
+};
+
+UserSchema.statics.findByCredentials = function (email, password) {
+
+  var UserModel = this;
+
+  return UserModel.findOne({
+    'email' : email
+  }).then((user) => {
+
+    console.log(user);
+
+    if(!user){
+      return Promise.reject();
+    }
+
+    return new Promise(function(resolve, reject) {
+
+      bcrypt.compare(password, user.password, (err, res) => {
+
+        console.log(res);
+
+        if(res){
+          resolve(user);
+        }else {
+          reject();
+        }
+      });
+    });
+  });
+};
+
 UserSchema.statics.findByToken = function (token) {
 
   var UserModel = this;
@@ -98,7 +141,7 @@ UserSchema.pre('save', function (next) {
   if (user.isModified('password')) {
 
     bcrypt.genSalt(10, (err, salt) => {
-      
+
       bcrypt.hash(user.password, salt, (err, hash) => {
           user.password = hash;
           next();
