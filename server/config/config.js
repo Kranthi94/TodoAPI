@@ -1,9 +1,12 @@
 var env = process.env.NODE_ENV || 'development';
 
-if(env === 'development'){
-  process.env.PORT = 8000;
-  process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoAPI';
-}else if(env === 'test'){
-  process.env.PORT = 8000;
-  process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoAPITest';
+if(env === 'development' || env ==== 'test'){
+
+  var configFile = require('config.json');
+
+  var envConfig = configFile[env];
+
+  Object.keys(envConfig).forEach((key) => {
+    process.env[key] = envConfig[env];
+  });
 }
